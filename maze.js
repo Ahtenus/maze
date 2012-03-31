@@ -41,6 +41,7 @@ var block = {
 		// Clear:
 		// can.clearRect((C.width+C.padding)*this.x,(C.width+C.padding)*this.y, C.width+C.padding, C.width+C.padding);
 	},
+	// Gets unvisited neightbours, m is the matrix with the blocks.
 	unvisitedNeightbours: function(m) {
 				      var neightbours = [];
 				      if(this.y !== 0 && !m[this.x][this.y-1].visited) {
@@ -62,6 +63,7 @@ var block = {
 function randomInt(min, max)  {  
 	return Math.floor(Math.random() * (max - min + 1)) + min;  
 }
+// Creates an empty maze with blocks.
 function emptyMaze() {
 	var m = [];
 	for(i=0;i < C.rows;i++) {
