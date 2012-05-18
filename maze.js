@@ -85,12 +85,24 @@ function generateMaze() {
 	current.visited = true;
 	current.current = true;
 	var blockStack = [];
+
+    // shim layer with setTimeout fallback
+    window.requestAnimFrame = (function(){
+      return  window.requestAnimationFrame       || 
+              window.webkitRequestAnimationFrame || 
+              window.mozRequestAnimationFrame    || 
+              window.oRequestAnimationFrame      || 
+              window.msRequestAnimationFrame     || 
+              function( callback ){
+                window.setTimeout(callback, 1000 / 60);
+              };
+    })();
 	// While there are unvisited cells
-	gen();
 	function gen() {
 		if (visitedCells < C.rows*C.cols) {
 			var neightbours = current.unvisitedNeightbours(m);	
 			if(neightbours.length !== 0) {
+				requestAnimFrame(gen);
 				// Choose randomly one of the unvisited neighbours
 				var neightbour = neightbours[randomInt(0, neightbours.length - 1)];
 				// Push the chosen cell to the stack
@@ -113,12 +125,12 @@ function generateMaze() {
 				neightbour.current = true;
 				neightbour.draw();
 				current = neightbour;
-				setTimeout(gen,10);
 			} else {
 				current = blockStack.pop();
 				gen();
 			}
 		}
 	}
+	gen();
 }
 });
